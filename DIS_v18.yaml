@@ -1,0 +1,2140 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: Digital Integration Spine
+  description: "Provides information on basic functionalaties of e-commerce actions"
+  contact:
+    name: Tata Consultancy Services Ltd.
+    email: email@tcs.com
+servers:
+- url: http://localhost:8080/api/v1
+  description: Development
+    
+paths:
+  "/dis/products":
+    get:
+      tags:
+        - Product
+      operationId: getAllProducts
+      summary: "Retrieve Products - HOME SCREEN"
+      description: "Retrieves product based on filter parameter passed"
+      parameters: 
+        - $ref: "#/components/parameters/productBrand"
+        - $ref: "#/components/parameters/productName"
+        - $ref: "#/components/parameters/dateNewArrivals"
+        - $ref: "#/components/parameters/categoryId"
+      responses:
+        '200':
+          description: List of all products available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productsResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '404':
+          description: NOT FOUND
+          
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+  "/dis/products/{productId}":
+    get:
+      tags:
+        - Product
+      operationId: getProductForId
+      summary: "Retrieve Product - HOME SCREEN"
+      description: "Retrieve Product for given product Id"
+      parameters: 
+        - $ref: "#/components/parameters/productId"
+        
+      responses:
+        '200':
+          description: "Product info for the given product Id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/product"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '404':
+          description: NOT FOUND
+          
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  
+  "/dis/products/metafields":
+    get:
+      tags:
+        - Product
+      operationId: getProductMetaFields
+      summary: Retrieve Meta Fields - HOME SCREEN
+      description: "Retrieve Meta informations for the specified product"
+      responses:
+        '200':
+          description: Meta fields of the product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/metaFieldsResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+  "/dis/recommendations":
+     get:
+      tags:
+        - Product
+      operationId: getUserRecommendations
+      summary: "Retrieve Recommendations -  HOME SCREEN"
+      description: "Retrieve Recommended Products for the user"
+      parameters: 
+        - $ref: "#/components/parameters/userIdQuery"
+      responses:
+        '200':
+          description: List of recommended products for the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productsResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '404':
+          description: NOT FOUND
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+  "/dis/categories":
+    get:
+      operationId: getAllCategories
+      description: List of available categories
+      summary: Retrieve Categories - HOME SCREEN
+      tags:
+        - Category
+      responses:
+        '200':
+          description: category list
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/categoriesResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+    post:
+      operationId: addCategories
+      description: Create / add new categories
+      summary: Create categories
+      tags:
+        - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/categoriesRequest"
+      responses:
+        '201':
+          description: category list
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/categoriesResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+  "/dis/categories/{categoryId}":
+    delete:
+      operationId: deleteCategoryById
+      description: Delete the category for mentioned ID
+      summary: Delete Category by ID
+      parameters: 
+        - name: categoryId
+          in: path
+          description: Unique ID of Category
+          required: true
+          schema:
+            type: integer
+            example: 2 
+              
+      tags:
+        - Category
+      responses:
+        '200':
+          description: Success Message for deletion 
+          content:
+            application/json:
+                schema:
+                  type: string
+                  example: "Category Deleted Successfully !"
+        
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                  
+  "/dis/brands":
+    get:
+      operationId: brandsV1
+      description: List of available brands
+      summary: Retrieve Brands - HOME SCREEN
+      tags:
+        - Brand
+      responses:
+        '200':
+          description: brand list
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/brandsResponse"  
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    
+    post:
+      operationId: addBrands
+      description: Create / add new Brands
+      summary: Create Brands
+      tags:
+        - Brand
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/brandsRequest"
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/brandsResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                  
+  "/dis/orders":
+    get:
+      operationId: getOrdersByUserId
+      summary: "Retrieve Orders for User"
+      tags:
+        - Order
+      description: "Retrieve order history for given user ID"
+      parameters: 
+        - $ref: "#/components/parameters/userIdQuery"
+      responses:  
+        '200':
+          description: order list
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/orderResponse" 
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+    post:
+      operationId: createOrder
+      summary: "Create an order for User"
+      tags:
+        - Order
+      description: "Create Order for the user"
+      requestBody:
+        content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/orderRequest" 
+      responses:  
+        '200':
+          description: Orders placed
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/orderResponse" 
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        
+    put:
+      operationId: updateOrder
+      summary: "Update an order with recent activity"
+      tags:
+        - Order
+      description: "Update Order for the user"
+      requestBody:
+        content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/updateOrderRequest" 
+      responses:  
+        '200':
+          description: Order Updated
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/orderResponse" 
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+  "/dis/orders/{orderId}":
+     get:
+      operationId: getOrdersByOrderId
+      summary: "Retrieve Order History for User"
+      tags:
+        - Order
+      description: "Retrieve order details for given order ID"
+      parameters: 
+        - $ref: "#/components/parameters/orderId"
+      responses:  
+        '200':
+          description: Order Details
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/orderResponse" 
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+  "/dis/users":
+    post:
+      summary: Register User Profile - REGISTER SCREEN
+      operationId: createUserV1
+      description: Create / add new user profile
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userRequest"
+      responses:
+        '201':
+          description:  PROFILE CREATED
+          content:
+            application/json:
+                schema:
+                  $ref: "#/components/schemas/userResponse" 
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      security: []
+    put:
+      summary: Update User Profile
+      operationId: updateUserDetails
+      description: Update user profile
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateUserRequest"
+      responses:
+        '200':
+          description:  User Profile Updated
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/userResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      security: []
+      
+
+  "/dis/users/{userId}":
+    get:
+      summary: Fetch User Detials
+      description: "Retrieve information for specified user"
+      operationId: userDetailsV1
+      tags:
+        - User
+      parameters:
+        - $ref: "#/components/parameters/userId"
+      responses:
+        '200':
+          description:  OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      security: [] 
+    
+  # "/dis/login":
+  #   post:
+  #     tags:
+  #       - Authentication
+  #     operationId: loginV1
+  #     summary: "User Login - LOGIN SCREEN"
+  #     requestBody:
+  #       required : true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/loginRequest"
+  #     responses:
+  #       '200':
+  #         description:  User Details
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/loginResponse"
+  #       '400':
+  #         description: Bad Request
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/error"
+  #       '401':
+  #         description: Authentication information is missing.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/error"
+  #       '403':
+  #         description: Access to the requested URL by the client is forbidden.
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/error"
+                
+  #       '405':
+  #         description: Method Not Allowed
+                
+  "/dis/carts":
+    post:
+      summary: Create Cart
+      operationId: addCartv1
+      description: Create / add new cart
+      tags:
+        - Cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cartRequest"
+      responses:
+        '200':
+          description:  Cart Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cartResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      security: []
+     
+    put:
+      summary: Add Products to the cart
+      description: Add list of products to cart with given ID
+      operationId: addItemToCart
+      tags:
+        - Cart
+      # parameters:
+      #   - $ref: "#/components/parameters/cartId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateCartRequest"
+      responses:
+        '200':
+          description: UPDATED 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cartResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+        
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+  "/dis/carts/{cartId}":      
+    get:
+      summary: Get products from given cart
+      description: Retrieve products from the given cart
+      operationId: getCartItems
+      tags:
+        - Cart
+      parameters:
+        - $ref: "#/components/parameters/cartId"
+      responses:
+        '200':
+          description: List of products from given cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cartResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+    delete:
+      summary: Delete Cart for gievn ID
+      description: Delete Cart for gievn ID
+      operationId: deleteCartById
+      tags:
+        - Cart
+      parameters:
+        - $ref: "#/components/parameters/cartId"
+      responses:
+        '200':
+          description: Deletion message
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Cart with ID 2 Deleted Successfully !"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  
+  "/dis/carts/{cartId}/checkout":
+    get:
+      summary: Checkout specified cart - BUY NOW
+      description: Checkout specified cart after payment and confirm order
+      operationId: doCheckoutCartAndBuy
+      tags:
+        - Cart
+      parameters:
+        - $ref: "#/components/parameters/cartId"
+        - $ref: "#/components/parameters/addressId"
+      # requestBody:
+      #   required: true
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: "#/components/schemas/cartCheckoutRequest"
+      responses:
+        '200':
+          description: Order Confirmation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cartCheckoutResponse"
+          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Ocurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+          
+  "/dis/products/{productId}/offers":
+     get:
+      tags:
+        - Offer
+      operationId: getOfferByProductId
+      summary: "Retrieve Offers for the product - HOME SCREEN"
+      description: "Retrieve list of offers for the product"
+      parameters: 
+        - $ref: "#/components/parameters/productId"
+        
+      responses:
+        '200':
+          description: Offers on the given product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/offersResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '404':
+          description: NOT FOUND
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      
+  "/dis/pickup":
+     get:
+      tags:
+        - Store Locator
+      operationId: getProductPickupLocation
+      summary: "Retrieve pickup location - Shipping Screen (Pickup Location)"
+      description: "Retrieve Pickup Location"
+      parameters: 
+        # - $ref: "#/components/parameters/productIdInventory"
+        - $ref: "#/components/parameters/userIdInventory"
+        
+      responses:
+        '200':
+          description: "Pick Location"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inventoryResponse"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '403':
+          description: Access to the requested URL by the client is forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '404':
+          description: NOT FOUND
+        '401':
+          description: Authentication information is missing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+                
+        '405':
+          description: Method Not Allowed
+          
+        '500':
+          description: Unknown Error Occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+      
+components:
+  parameters:
+  
+     addressId:
+      required: true
+      in: query
+      name: addressId
+      description: address Id
+      schema:
+        type: integer
+        example: 9
+  
+     userIdInventory:
+        required: true
+        in: query
+        name: userId
+        description: Unique Identifier
+        schema:
+         type: integer
+         example: 8
+   
+     productIdInventory:
+        required: true
+        in: query
+        name: productId
+        description: product Id
+        schema:
+         type: integer
+         example: 9
+  
+     emailId:
+        required: true
+        in: query
+        name: emailId
+        description: User's Email ID
+        schema:
+         type: string
+         example: "john.doe@email.com"
+         
+     cartId:
+        required: true
+        in: path
+        name: cartId
+        description: Cart ID
+        schema:
+         type: integer
+         example: 2
+  
+     userId:
+        required: true
+        in: path
+        name: userId
+        schema:
+          type: integer
+          example: 5
+          
+     userIdQuery:
+        required: true
+        in: query
+        name: userId
+        schema:
+          type: integer
+          example: 4
+          
+     orderId:
+        required: true
+        in: path
+        name: orderId
+        schema:
+          type: integer
+          example: 4
+          
+     categoryId:
+        required: false
+        in: query
+        name: categoryId
+        schema:
+          type: integer
+          example: 5
+    
+     productId:
+        required: true
+        in: path
+        name: productId
+        description: Product ID
+        schema:
+          type: integer
+          example: 5
+          
+          
+     productBrand:
+      in: query
+      name: productBrand
+      description: Product Brand
+      required: false
+      schema:
+        type: string
+        example: "Apple"
+        default: "Apple"
+        
+     productName:
+        in: query
+        name: productName
+        description: Product Name
+        required: false
+        schema:
+          type: string
+          description: name of product
+          default: "Iphone X"
+          
+     dateNewArrivals:
+      in: query
+      name: dateNewArrivals
+      description: "Date range of new arrivals (NOTE: select start date only as end date is current date)" 
+      required: false
+      schema:
+        type: string
+        format: date
+        example: "2021-12-02"
+        
+  schemas:
+  
+    inventoryResponse:
+        $ref: "#/components/schemas/inventoryAddress"
+      
+    inventoryAddress:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          example: "Sector 5"
+        addressLine2:
+          type: string
+          example: "Newtown"
+        city: 
+          type: string
+          example: "Kolkata"
+        zipCode:
+          type: number
+          format: int64
+          example: 788645
+        state:  
+          type: string
+          example: "West Bengal"
+        country:  
+          type: string
+          example: "India"
+        addressType:
+          type: string
+          example: "Store"
+        latitude:  
+          type: string
+        longitude:  
+          type: string
+        openTime:  
+          type: string
+          example: "10:30 AM"
+        closeTime:  
+          type: string
+          example: "11:30 PM"
+          
+    metaFieldsResponse:
+      type: object
+      properties:
+        metafieldList:
+          $ref: "#/components/schemas/productMetafieldsList"
+  
+    productMetafieldsList:  
+      type: array
+      minItems: 1
+      maxItems: 20
+      items:
+        $ref: "#/components/schemas/productMetafields"
+  
+    productMetafields:
+      type: object
+      properties:
+        productId:  
+          type: integer
+          example: 4
+        productName:
+          type: string
+          maxLength: 50
+          minLength: 2
+          example: "Vivo V20"
+        brand: 
+          type: string
+          example: "VIVO"
+        productCategory:
+          type: string
+          example: "Mobiles"
+        image:
+          type: string
+          format: binary
+          
+    offersResponse:
+      type: object
+      properties:
+        offers:
+          $ref: "#/components/schemas/offers"
+  
+    offers:
+      type: array
+      minItems: 1
+      maxItems: 5
+      description: Offers for the product
+      items:
+        $ref: "#/components/schemas/offer"
+        
+    offer:
+      type: object
+      properties:
+        offerId:
+          type: integer
+          example: 3
+        offerName:
+          type: string
+          example: "BBD"
+        productId:
+          type: integer
+          example: 4
+        storeId:  
+          type: string
+          example: "STO8877"
+        actualProductPrice:
+          type: number
+          format: double
+          example: 66678.66
+        offerPercentage:  
+          type: number
+          format: double
+          example: 65.01
+        productPriceWithOffer:  
+          type: number
+          format: double
+          example: 43347.36
+        offerValidTill:
+          type: string
+          format: date
+          example: "2021-12-20"
+        offerTnC: 
+          type: string
+          example: "Offer Valid for **SBI debit** card users only..."
+    
+    updateUserRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 2
+          description: Name of the customer
+          minLength: 3
+          maxLength: 50
+        email: 
+          type: string
+          example: abc@tcs.com
+        address:
+           $ref: "#/components/schemas/address"
+             
+        profilePicture: 
+          type: string
+          format: binary
+        phone: 
+          type: string
+          example: +91-1111111111
+    
+    cartCheckoutRequest:
+      type: object
+      properties:
+          cartId:
+            type: integer
+            example: 5
+          userId:
+            type: integer
+            example: 7
+          paymentInfo:
+            type: object
+            properties:
+              paymentType: 
+                type: string
+                example: "Paytm"
+          deliveryInfo:
+            type: object
+            properties:
+              schema:
+                $ref: "#/components/schemas/address"
+  
+    cartCheckoutResponse:
+      type: object
+      properties:
+          cartId:
+            type: integer
+            example: 9
+          userId:
+            type: integer
+            example: 8
+          paymentInfo:
+            type: object
+            properties:
+              paymentType: 
+                type: string
+                example: "Paytm"
+              transactionAmount:
+                type: string
+                example: "90000.00"
+          userInfo:
+            type: object
+            properties:
+              userName:
+                type: string
+                example: "Sam_90"
+              contactNumber:
+                type: string
+                example: "+91-837373522"
+          deliveryInfo:
+            $ref: "#/components/schemas/address"
+                
+          shipmentProducts:
+            type: array
+            minItems: 1
+            maxItems: 20
+            items:
+             $ref: "#/components/schemas/shipmentProduct"
+
+    shipmentProduct:
+        type: object
+        properties:
+          productId:
+            type: integer
+            example: 7
+          productName:
+            type: string
+            example: "Iphone X"
+          productImage:
+            type: string
+            format: binary
+          productQuantity:
+            type: number
+            example: 3
+          availableQuantity:
+            type: number
+            example: 28
+          productPrice:
+            type: number
+            example: 8
+          deliveryAvailable:
+            type: boolean
+            example: true
+          expectedDeliveryDate:
+            type: string
+            example: "2021-04-28"
+          deliveryType:
+            type: string
+            example: "Free"
+          deliveryCharge:
+            type: number
+            format: double
+            example: 0.00
+          totalShipmentCharge:
+            type: number
+            format: double
+            example: 24.08
+
+    cartRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 6
+        date:
+          type: string
+          example: "2022-01-01"
+        cartProducts:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/cartProduct"
+            
+    updateCartRequest:
+      type: object
+      properties:
+        cartId:
+          type: integer
+          example: 4
+        userId:
+          type: integer
+          example: 6
+        date:
+          type: string
+          example: "2022-01-05"
+        cartProducts:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/cartProduct"
+
+    cartProduct:
+        type: object
+        properties:
+          productId:
+            type: integer
+            example: 5
+          cartQuantity:
+            type: number
+            example: 3
+          offerId:
+            type: integer
+            example: 4
+
+    cartResponse:
+      type: object
+      properties:
+        cartId:
+          type: integer
+          example: 2
+        userId:
+          type: integer
+          example: 7
+        date:
+          type: string
+          example: "2021-09-21"
+        cartProducts:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/cartProductDetails"
+            
+    cartProductDetails:
+        type: object
+        properties:
+          productId:
+            type: integer
+            example: 6
+          productName:
+            type: string
+            example: "Iphone X"
+          productImage:
+            type: string
+            format: binary
+          productQuantity:
+            type: number
+            example: 3
+          availableQuantity:
+            type: number
+            example: 28
+          productPrice:
+            type: number
+            example: 8
+            
+    userRequest:
+     type: object
+     properties:
+      userName:
+        type: string
+        example: John Doe
+        description: Name of the customer
+        minLength: 3
+        maxLength: 50
+      userEmail: 
+        type: string
+        example: abc@tcs.com
+      userPassword:
+        type: string
+      userAddress:
+        type: object
+        properties:
+          schema:
+            $ref: "#/components/schemas/address"
+      profilePicture: 
+        type: string
+        format: binary
+      contactNumber:
+        type: string
+        example: "+91-8989774679"
+        
+    address:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+          example: "Sector 1"
+        addressLine2:
+          type: string
+          example: "Newtown"
+        city: 
+          type: string
+          example: "Kolkata"
+        zipCode:
+          type: number
+          format: int64
+          example: 788645
+        state:  
+          type: string
+          example: "West Bengal"
+        country:  
+          type: string
+          example: "India"
+        addressType:
+          type: string
+          example: "Home"
+        # latitude:  
+        #   type: string
+        # longitude:  
+        #   type: string
+          
+    addressResponse:
+      type: object
+      properties:
+        addressId: 
+          type: integer
+          example: 6
+        addressLine1:
+          type: string
+          example: "Sector 1"
+        addressLine2:
+          type: string
+          example: "Newtown"
+        city: 
+          type: string
+          example: "Kolkata"
+        zipCode:
+          type: number
+          format: int64
+          example: 788645
+        state:  
+          type: string
+          example: "West Bengal"
+        country:  
+          type: string
+          example: "India"
+        addressType:
+          type: string
+          example: "Home"
+        latitude:  
+          type: string
+        longitude:  
+          type: string
+          
+    userResponse:
+     type: object
+     properties:
+      userId:
+        type: integer
+        example: 7
+      userName:
+        type: string
+        example: John Doe
+        description: Name of the customer
+        minLength: 3
+        maxLength: 50
+      email: 
+        type: string
+        example: abc@tcs.com
+      address:
+        $ref: "#/components/schemas/addressResponse"
+      profilePicture: 
+        type: string
+        format: binary
+      phone:
+        type: string
+        example: "+91-1111111111"
+        
+    productsResponse:
+      type: object
+      properties:
+        productList:
+          $ref: "#/components/schemas/products"
+    
+    products:
+      type: array
+      minItems: 1
+      maxItems: 20
+      description: List of products
+      items:
+        $ref: "#/components/schemas/product"
+    
+    product:
+      description: Product with given Id
+      type: object
+      properties:
+       productId: 
+        type: integer
+        example: 6
+       productName:
+        type: string
+        example: "iPhone 13"
+        minLength: 5
+        maxLength: 20
+       productDescription:
+        type: string
+        minLength: 20
+        maxLength: 300
+        example: "High Definition Camera, Slim & shiny look...."
+       image:
+        type: string
+        format: binary
+       brand:
+        type: string
+        enum: [APPLE, SAMSUNG, VIVO]
+       quantityAvailable:
+        type: number
+        format: int32
+        example: 50
+       minQuantity:
+        type: number
+        description: indicates to minimum number of products to be put for sale on offer 
+        format: int32
+        example: 10
+       mfgDate:
+        type: string
+        format: date
+        example: "2021-09-12"
+       price:
+        type: string
+        example: "1234.98"
+       productCategory:
+        type: string
+        example: "Mobile"
+       productCategoryId:
+        type: integer
+        example: 6
+       productReviewCnt: 
+        type: number
+        format: int32
+        example: 500
+       productReviewStars: 
+        type: number
+        format: int32
+        example: 5
+       productSpecification:
+        type: object
+        properties:
+          specifications:
+            $ref : "#/components/schemas/specification"
+            
+    specification:  
+      type: object
+      properties:
+        processor:
+          type: string
+          example: "Hexa Core"
+        frontCamera: 
+          type: string
+          example: "12MP"
+        rearCamera:
+          type: string
+          example: "12MP"
+        ram:
+          type: string
+          example: "8GB"
+        storage:  
+          type: string
+          example: "128GB"
+        support4G:
+          type: boolean
+          example: true
+        dualSim:
+          type: boolean
+          example: true
+        displaySize:
+          type: string
+          example: "6.2 inches"
+
+    # loginRequest:
+    #   type: object
+    #   properties:
+    #     userName:
+    #       type: string
+    #       description: email
+    #     password:
+    #       type: string
+    #       description: password
+    
+    # loginResponse:
+    #   type: object
+    #   properties:
+    #     userName:
+    #       type: string
+    #       description: username
+    #       example: "Simon_Sam"
+    #     token:
+    #       type: string
+    #       description: session id token
+    #       example: "athbGciOdfdzI1Ndfd"
+          
+    error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          description: timestamp of error
+          example: "2021-12-30T06:36:47.466+00:00"
+        message:
+          type: string
+          description: error message
+          example: "Bad request"
+        details:
+          type: string
+          description: uri of the error request
+          example: "uri=/api/v1/dis/users"
+          
+    categoriesRequest:
+      type: array
+      minItems: 1
+      maxItems: 20
+      description: List of product categories
+      items:
+        $ref: "#/components/schemas/categoryRequest"
+          
+    categoryRequest:
+      type: object
+      properties:
+        categoryName:
+          type: string
+          description: category name
+          example: "Electronics"
+        categoryDescription:
+          type: string
+          minLength: 5
+          maxLength: 500
+          example: "A product with multi use...."
+          
+          
+    categoriesResponse:
+      type: object
+      properties:
+        result:
+          $ref: "#/components/schemas/categoriesList"
+          
+    categoriesList:
+      type: array
+      minItems: 1
+      maxItems: 20
+      description: List of product categories
+      items:
+        $ref: "#/components/schemas/categoryResponse"
+          
+    categoryResponse:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          description: id of the category
+          example: 5
+        categoryName:
+          type: string
+          description: category name
+          example: "Electronics"
+        categoryDescription:
+          type: string
+          minLength: 5
+          maxLength: 500
+          example: "A product with multi use...."
+          
+    brandsResponse:
+      type: object
+      properties:
+        brandsList:
+           $ref: "#/components/schemas/brandsList"
+          
+    brandsList:
+      type: array
+      minItems: 1
+      maxItems: 20
+      items:
+        $ref: "#/components/schemas/brandResponse"
+      
+    brandResponse:
+      type: object
+      properties:
+        brandId:
+          type: integer
+          example: 3
+        brandName: 
+          type: string
+          example: "Apple"
+        brandOrigin:
+          type: string
+          example: "USA"
+        brandLogo:
+          type: string
+          format: binary
+        brandDescription:
+          type: string
+          example: "Manufacturer of World Class Product"
+          
+    brandsRequest:
+      type: array
+      minItems: 1
+      maxItems: 20
+      items:
+        $ref: "#/components/schemas/brandRequest"
+      
+    brandRequest:
+      type: object
+      properties:
+        brandName: 
+          type: string
+          example: "Apple"
+        brandOrigin:
+          type: string
+          example: "USA"
+        brandLogo:
+          type: string
+          format: binary
+        brandDescription:
+          type: string
+          example: "Manufacturer of Worl Class Product"
+          
+    orderRequest:
+      type: object
+      properties:
+        cartId:
+            type: integer
+            example: 5
+        userId:
+          type: integer
+          example: 8
+        storeId:
+          type: integer
+          example: 3
+        paymentInfo:
+          type: object
+          properties:
+            paymentStatus:
+              type: string
+              example: "Successful"
+            transactionId:
+              type: string
+              example: "TX1248604890"
+            paymentType: 
+              type: string
+              example: "Paytm"
+            paymentAccount: 
+              type: string
+              example: "1234-5678-8901"
+            transactionAmount:
+              type: string
+              example: "90000.00"
+        deliveryInfo:
+          type: object
+          properties:
+            schema:
+              $ref: "#/components/schemas/address"
+
+    orderResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 5
+        ordersList: 
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/order"
+  
+    order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          example: 2
+        storeId:
+          type: integer
+          example: 6
+        orderDate:  
+          type: string
+          format: date
+          example: "2021-12-30"
+        orderLocation:
+          type: string
+          description: "location where order is placed"
+          example: "Newtown, Kolkata"
+        orderStatus:
+          type: string
+          example: "Complete"
+        paymentInfo:
+          type: object
+          properties:
+            paymentStatus:
+              type: string
+              example: "Successful"
+            transactionId:
+              type: string
+              example: "TX1248604890"
+            paymentType: 
+              type: string
+              example: "Paytm"
+            paymentAccount: 
+              type: string
+              example: "1234-5678-8901"
+            transactionAmount:
+              type: string
+              example: "90000.00"
+        deliveryInfo:
+          type: object
+          properties:
+            schema:
+              $ref: "#/components/schemas/address"
+        orderProducts:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/orderProduct"
+
+    orderProduct:
+      type: object
+      properties:
+        productId:
+          type: integer
+          example: 4
+        productName:
+          type: string
+          example: "Iphone X"
+        productImage:
+          type: string
+          format: binary
+        productQuantity:
+          type: number
+          example: 3
+        productPrice:
+          type: number
+          example: 60000
+        expectedDeliveryDate:
+          type: string
+          example: "2021-04-28"
+        deliveryStatus:
+          type: string
+          enum: [COMPLETE, PENDING, IN TRANSIT]
+        actualDeliveryDate:
+          type: string
+          example: "2021-04-28"
+        deliveryComments:
+          type: string
+          example: "Delivered to customer"
+        deliveryType:
+          type: string
+          enum: [Free, Paid]
+        deliveryCharge:
+          type: number
+          example: 0
+        totalShipmentCharge:
+          type: number
+          example: 60000
+          
+    updateOrderRequest:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          example: 3
+        orderStatus:
+          type: string
+          example: "Complete"
+        paymentInfo:
+          type: object
+          properties:
+            paymentStatus:
+              type: string
+              example: "Successful"
+            transactionId:
+              type: string
+              example: "TX1248604890"
+            paymentType: 
+              type: string
+              example: "Paytm"
+            paymentAccount: 
+              type: string
+              example: "1234-5678-8901"
+            transactionAmount:
+              type: string
+              example: "90000.00"
+        updateOrderProducts:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/updateOrderProduct"
+
+    updateOrderProduct:
+      type: object
+      properties:
+        productId:
+          type: integer
+          example: 3
+        deliveryDate:
+          type: string
+          example: "2021-04-28"
+        deliveryStatus:
+          type: string
+          enum: [COMPLETE, PENDING, IN TRANSIT]
+        deliveryComments:
+          type: string
+          example: "Delivered to customer"
+          
+
+        
+          
+  
